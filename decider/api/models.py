@@ -15,6 +15,8 @@ def generate_unique_room_code():
 
 # Create your models here.
 class Room(models.Model):
-    code = models.CharField(max_length=8, default="", unique=True)
+    code = models.CharField(max_length=8, default=generate_unique_room_code, unique=True)
     host = models.CharField(max_length=50, unique=True)
+    category = models.CharField(max_length=10, default='Movie', unique=False)
+    number_of_deciders = models.IntegerField(null=False, default=2)
     created_at = models.DateTimeField(auto_now_add=True)
