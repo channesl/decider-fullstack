@@ -44,13 +44,13 @@ function CreateRoomPage() {
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} align="center">
-        <Typography component="h4" variant="h4">
+        <Typography component={"div"} variant="h4">
           Create A Room
         </Typography>
       </Grid>
       <Grid item xs={12} align="center">
         <FormControl component="fieldset">
-          <FormHelperText>
+          <FormHelperText component={"div"}>
             <div align="center">What To Decide?</div>
           </FormHelperText>
           <RadioGroup row defaultValue="Movie" onChange={handleCategoryChange}>
@@ -81,7 +81,7 @@ function CreateRoomPage() {
               style: { textAlign: "center" },
             }}
           />
-          <FormHelperText>
+          <FormHelperText component={"div"}>
             <div align="center">Number Of Deciders</div>
           </FormHelperText>
         </FormControl>

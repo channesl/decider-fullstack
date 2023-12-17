@@ -1,25 +1,52 @@
-import React, { useState } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  Redirect,
-} from "react-router-dom";
-import JoinRoomPage from "./JoinRoomPage";
-import CreateRoomPage from "./CreateRoomPage";
-import Room from "./Room";
+import React, { Component, useState, useEffect } from "react";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 function HomePage() {
+  const [roomCode, setRoomCode] = useState(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    async function checkIfAlreadyInRoom() {
+      fetch("/api/user-in-room")
+        .then((response) => response.json())
+        .then((data) => {
+          setRoomCode(data.code);
+          if (data.code !== null) {
+            navigate("/room/" + data.code);
+          }
+        });
+    }
+
+    checkIfAlreadyInRoom();
+  }, []);
   return (
-    <Router>
-      <Routes>
-        <Route exact path="/" element={<p>This is the home page</p>} />
-        <Route path="/join" element={<JoinRoomPage />} />
-        <Route path="/create" element={<CreateRoomPage />} />
-        <Route path="/room/:roomCode" element={<Room />} />
-      </Routes>
-    </Router>
+    <Grid container spacing={1}>
+      <Grid item xs={12} align="center">
+        <Button
+          color="primary"
+          variant="contained"
+          to="/create"
+          component={Link}
+        >
+          Host Room
+        </Button>
+      </Grid>
+      <Grid item xs={12} align="center">
+        <Button color="primary" variant="contained" to="/join" component={Link}>
+          Join Room
+        </Button>
+      </Grid>
+    </Grid>
   );
 }
 

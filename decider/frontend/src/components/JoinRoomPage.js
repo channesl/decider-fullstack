@@ -17,30 +17,41 @@ function JoinRoomPage() {
   const navigate = useNavigate();
 
   const handleRoomCodeChange = (e) => {
-    setRoomCode(e.target.value);
+    let upperCaseCode = e.target.value.toUpperCase();
+    setRoomCode(upperCaseCode);
   };
 
   const handleJoinRoomPressed = () => {
-    fetch("/api/get-room" + "?code=" + roomCode)
-      .then((response) => response.json())
-      .then((data) => {
-        if (typeof data.code !== "undefined") {
-          navigate("/room/" + data.code);
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        code: roomCode,
+      }),
+    };
+    fetch("/api/join-room", requestOptions)
+      .then((response) => {
+        if (response.ok) {
+          navigate("/room/" + roomCode);
+        } else {
+          setJoinButtonText("Wrong Code");
         }
-        setJoinButtonText("Wrong Code");
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} align="center">
-        <Typography component="h4" variant="h4">
-          Join A Room
+        <Typography component={"div"} variant="h4">
+          Join a Room
         </Typography>
       </Grid>
       <Grid item xs={12} align="center">
         <FormControl>
-          <FormHelperText>
+          <FormHelperText component={"div"}>
             <div align="center">Room Code:</div>
           </FormHelperText>
           <TextField
