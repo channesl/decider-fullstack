@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import {
   Grid,
   Button,
@@ -7,6 +7,9 @@ import {
   Box,
   ButtonGroup,
   IconButton,
+  Card,
+  CardMedia,
+  CardContent,
 } from "@material-ui/core";
 import { Cancel, Favorite, Close } from "@material-ui/icons";
 
@@ -30,10 +33,17 @@ function Room() {
   const [isHost, setIsHost] = useState(defaultIsHost);
   const { roomCode } = useParams();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const getRoomDetails = () => {
       fetch("/api/get-room" + "?code=" + roomCode)
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            navigate("/");
+          }
+          return response.json();
+        })
         .then((data) => {
           setNumberOfDeciders(data.number_of_deciders);
           setCategory(data.category);
@@ -44,6 +54,16 @@ function Room() {
     getRoomDetails();
   }, [roomCode]);
 
+  const leaveButtonPressed = () => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    };
+    fetch("/api/leave-room", requestOptions).then((_response) => {
+      navigate("/");
+    });
+  };
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} align="center">
@@ -52,17 +72,31 @@ function Room() {
         </Typography>
       </Grid>
       <Grid item xs={12} align="center">
-        <Box display={"flex"} justifyContent={"center"} margin={2}>
-          <IconButton color="secondary" variant="contained" size="medium">
-            <Cancel />
-          </IconButton>
-          <IconButton color="primary" variant="contained" size="medium">
-            <Favorite />
-          </IconButton>
-        </Box>
+        <img
+          className="contentImg"
+          src="https://image.tmdb.org/t/p/w500/1E5baAaEse26fej7uHcjOgEE2t2.jpg"
+          height={300}
+        />
       </Grid>
       <Grid item xs={12} align="center">
-        <Button color="default" variant="contained" xs={{ m: 2 }}>
+        <Typography component={"div"} variant="h4">
+          Furious X
+        </Typography>
+      </Grid>
+      <Grid item xs={12} align="center">
+        <IconButton color="secondary" variant="contained" size="medium">
+          <Cancel />
+        </IconButton>
+        <IconButton color="primary" variant="contained" size="medium">
+          <Favorite />
+        </IconButton>
+      </Grid>
+      <Grid item xs={12} align="center">
+        <Button
+          color="default"
+          variant="contained"
+          onClick={leaveButtonPressed}
+        >
           Leave Room
         </Button>
       </Grid>
