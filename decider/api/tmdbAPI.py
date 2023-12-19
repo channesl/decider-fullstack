@@ -3,7 +3,7 @@ import json
 
 headers = {
     "accept": "application/json",
-    "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjZDYyYmU4YTFmNDlmNjU1NWU4YmYyZDVjYzJkYzVhYyIsInN1YiI6IjY1ODFlZmUwMjI2YzU2MDhhZDlkYmY3YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ABX-m1Mgu3oWL6iKY25sDBY5xcG3mT4TIish8TPZzL4"
+    "Authorization": 
 }
 
 movie_list = []
