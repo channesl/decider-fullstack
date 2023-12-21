@@ -20,3 +20,7 @@ class Room(models.Model):
     category = models.CharField(max_length=10, default='Movie', unique=False)
     number_of_deciders = models.IntegerField(null=False, default=2)
     created_at = models.DateTimeField(auto_now_add=True)
+
+class Movies(models.Model):
+    list_name = models.CharField(max_length=20, unique=True)
+    movie_list = models.JSONField()
